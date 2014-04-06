@@ -1,0 +1,13 @@
+language: python
+
+python:
+  - "2.7"
+
+install:
+  - pip install coveralls
+
+script:
+  - coverage run --source=dj_elastictranscoder setup.py test
+
+after_success:
+  - coveralls
