@@ -48,13 +48,3 @@ def sns_endpoint(request):
     # TODO: send signal to handler
 
     return HttpResponse('Done')
-
-
-def _oncomplete(request, message):
-    pass
-
-def _onerror(request, message):
-    pass
-
-def _onprogress(request, message):
-    pass
