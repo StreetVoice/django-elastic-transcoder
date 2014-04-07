@@ -55,3 +55,27 @@ Setting up AWS Elastic Transcoder
 2. Hookup every Notification. 
 3. Subscribe SNS Notification through HTTP
 4. You are ready to encode!
+
+
+
+Usage
+------------
+
+For instance, encode an mp3
+
+```python
+from dj_elastictranscoder.utils import encode
+
+input = {
+    'Key': 'path/to/input/file.mp3', 
+}
+
+outputs = [{
+    'Key': 'path/to/output/file.mp3',
+    'PresetId': '1351620000001-300040' # for example: 128k mp3 audio preset
+}]
+
+pipeline_id = '<pipeline_id>'
+
+encode(pipeline_id, input, outputs)
+```
