@@ -1,0 +1,12 @@
+{
+  "Type" : "Notification",
+  "MessageId" : "",
+  "TopicArn" : "",
+  "Subject" : "Amazon Elastic Transcoder has finished transcoding job 1396802241671-jkmme8.",
+  "Message" : "{\n  \"state\" : \"COMPLETED\",\n  \"version\" : \"2012-09-25\",\n  \"jobId\" : \"1396802241671-jkmme8\",\n  \"pipelineId\" : \"pipeline1\",\n  \"input\" : {\n    \"key\" : \"input.mp3\"\n  },\n  \"outputs\" : [ {\n    \"id\" : \"1\",\n    \"presetId\" : \"1351620000001-300040\",\n    \"key\" : \"output.mp3\",\n    \"status\" : \"Complete\",\n    \"duration\" : 110\n  } ]\n}",
+  "Timestamp" : "2014-04-06T16:37:37.265Z",
+  "SignatureVersion" : "1",
+  "Signature" : "",
+  "SigningCertURL" : "",
+  "UnsubscribeURL" : ""
+}
