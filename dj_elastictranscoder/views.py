@@ -3,8 +3,11 @@ import json
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.core.mail import mail_admins
 
-from .models import EncodeJob
-
+from .signals import (
+    transcode_onprogress,
+    transcode_onerror,
+    transcode_oncomplete
+)
 
 def sns_endpoint(request):
     """
@@ -35,18 +38,12 @@ def sns_endpoint(request):
     except ValueError:
         assert False, data['Message']
 
-    job, created = EncodeJob.objects.get_or_create(id=message['jobId'])
-    
+    #
     if message['state'] == 'PROGRESSING':
-        job.state = 1
+        transcode_onprogress.send(sender=None, message=message)
     elif message['state'] == 'COMPLETED':
-        job.state = 4
+        transcode_oncomplete.send(sender=None, message=message)
     elif message['state'] == 'ERROR':
-        job.state = 3
-
-    job.message = json.dumps(message)
-    job.save()
-
-    # TODO: send signal to handler
+        transcode_onerror.send(sender=None, message=message)
 
     return HttpResponse('Done')

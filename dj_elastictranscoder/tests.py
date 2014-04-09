@@ -2,10 +2,18 @@ import os.path
 import json
 
 from django.test import TestCase
+from django.dispatch import receiver
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
 
 from .models import EncodeJob
+from .signals import (
+    transcode_init, 
+    transcode_onprogress, 
+    transcode_onerror, 
+    transcode_oncomplete
+)
+
 
 
 PROJECT_ROOT = os.path.dirname(os.path.realpath(__file__))
@@ -14,6 +22,46 @@ FIXTURE_DIRS = os.path.join(PROJECT_ROOT, 'fixtures')
 
 class Item(models.Model):
     name = models.CharField(max_length=100)
+
+# ======================
+# define signal receiver
+# ======================
+
+@receiver(transcode_init)
+def encode_init(sender, message, **kwargs):
+    item = Item.objects.create(name='Hello')
+
+    ctype = ContentType.objects.get_for_model(item)
+
+    job = EncodeJob()
+    job.id = message['Job']['Id']
+    job.content_type = ctype
+    job.object_id = item.id
+    job.save()
+
+
+@receiver(transcode_onprogress)
+def encode_onprogress(sender, message, **kwargs):
+    job = EncodeJob.objects.get(pk=message['jobId'])
+    job.message = 'Progress'
+    job.state = 1
+    job.save()
+
+
+@receiver(transcode_onerror)
+def encode_onerror(sender, message, **kwargs):
+    job = EncodeJob.objects.get(pk=message['jobId'])
+    job.message = message['messageDetails']
+    job.state = 2
+    job.save()
+
+
+@receiver(transcode_oncomplete)
+def job_record(sender, message, **kwargs):
+    job = EncodeJob.objects.get(pk=message['jobId'])
+    job.message = 'Success'
+    job.state = 4
+    job.save()
 
 
 class SNSNotificationTest(TestCase):
@@ -51,7 +99,7 @@ class SNSNotificationTest(TestCase):
         self.assertEqual(resp.content, 'Done')
 
         job = EncodeJob.objects.get(id=self.job_id)
-        self.assertEqual(job.state, 3)
+        self.assertEqual(job.state, 2)
 
 
     def test_oncomplete(self):
@@ -66,14 +114,6 @@ class SNSNotificationTest(TestCase):
         self.assertEqual(job.state, 4)
 
 
-from .signals import (
-    transcode_init, 
-    transcode_onprogress, 
-    transcode_onerror, 
-    transcode_oncomplete
-)
-from django.dispatch import receiver
-
 
 class SignalTest(TestCase):
 
@@ -84,19 +124,6 @@ class SignalTest(TestCase):
 
         with open(os.path.join(FIXTURE_DIRS, 'submit.json')) as f:
             message = json.loads(f.read())
-
-        # define signal receiver
-        @receiver(transcode_init)
-        def job_record(sender, message, **kwargs):
-            item = Item.objects.create(name='Hello')
-
-            ctype = ContentType.objects.get_for_model(item)
-
-            job = EncodeJob()
-            job.id = message['Job']['Id']
-            job.content_type = ctype
-            job.object_id = item.id
-            job.save()
 
         # send signal
         transcode_init.send(sender=None, message=message)
@@ -126,14 +153,6 @@ class SignalTest(TestCase):
         with open(os.path.join(FIXTURE_DIRS, 'onprogress.json')) as f:
             resp = json.loads(f.read())
             message = json.loads(resp['Message'])
-
-        # define signal receiver
-        @receiver(transcode_onprogress)
-        def job_record(sender, message, **kwargs):
-            job = EncodeJob.objects.get(pk=message['jobId'])
-            job.message = 'Progress'
-            job.state = 1
-            job.save()
 
         # send signal
         transcode_onprogress.send(sender=None, message=message)
@@ -169,15 +188,6 @@ class SignalTest(TestCase):
             resp = json.loads(f.read())
             message = json.loads(resp['Message'])
 
-
-        # define signal receiver
-        @receiver(transcode_onerror)
-        def job_record(sender, message, **kwargs):
-            job = EncodeJob.objects.get(pk=message['jobId'])
-            job.message = message['messageDetails']
-            job.state = 2
-            job.save()
-
         # send signal
         transcode_onerror.send(sender=None, message=message)
 
@@ -211,14 +221,6 @@ class SignalTest(TestCase):
         with open(os.path.join(FIXTURE_DIRS, 'oncomplete.json')) as f:
             resp = json.loads(f.read())
             message = json.loads(resp['Message'])
-
-        # define signal receiver
-        @receiver(transcode_oncomplete)
-        def job_record(sender, message, **kwargs):
-            job = EncodeJob.objects.get(pk=message['jobId'])
-            job.message = 'Success'
-            job.state = 4
-            job.save()
 
         # send signal
         transcode_oncomplete.send(sender=None, message=message)
