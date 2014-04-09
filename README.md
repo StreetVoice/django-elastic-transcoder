@@ -64,7 +64,7 @@ Usage
 For instance, encode an mp3
 
 ```python
-from dj_elastictranscoder import Transcoder
+from dj_elastictranscoder.transcoder import Transcoder
 
 input = {
     'Key': 'path/to/input.mp3', 
