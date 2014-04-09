@@ -5,7 +5,7 @@ from django.contrib.contenttypes.generic import GenericForeignKey
 
 class EncodeJob(models.Model):
     STATE_CHOICES = (
-        (0, 'Waiting'),
+        (0, 'Submitted'),
         (1, 'Progressing'),
         (2, 'Error'),
         (3, 'Warning'),

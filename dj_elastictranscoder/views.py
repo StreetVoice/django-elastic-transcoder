@@ -2,6 +2,7 @@ import json
 
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.core.mail import mail_admins
+
 from .models import EncodeJob
 
 
@@ -43,6 +44,7 @@ def sns_endpoint(request):
     elif message['state'] == 'ERROR':
         job.state = 3
 
+    job.message = json.dumps(message)
     job.save()
 
     # TODO: send signal to handler
