@@ -64,18 +64,19 @@ Usage
 For instance, encode an mp3
 
 ```python
-from dj_elastictranscoder.utils import encode
+from dj_elastictranscoder import Transcoder
 
 input = {
-    'Key': 'path/to/input/file.mp3', 
+    'Key': 'path/to/input.mp3', 
 }
 
 outputs = [{
-    'Key': 'path/to/output/file.mp3',
+    'Key': 'path/to/output.mp3',
     'PresetId': '1351620000001-300040' # for example: 128k mp3 audio preset
 }]
 
 pipeline_id = '<pipeline_id>'
 
-encode(pipeline_id, input, outputs)
+transcoder = Transcoder(pipeline_id, 'ap-southeast-1')
+transcoder.encode(input, outputs)
 ```
