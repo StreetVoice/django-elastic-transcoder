@@ -114,7 +114,6 @@ class SNSNotificationTest(TestCase):
         self.assertEqual(job.state, 4)
 
 
-
 class SignalTest(TestCase):
 
     def test_transcode_init(self):
@@ -233,3 +232,24 @@ class SignalTest(TestCase):
         self.assertEqual('1396802241671-jkmme8', job.id)
         self.assertEqual('Success', job.message)
         self.assertEqual(4, job.state)
+
+
+"""
+class TranscoderTest(TestCase):
+    def test_transcoder(self):
+        from .transcoder import Transcoder
+
+        input = {
+            'Key': 'music/00/09/00094930/6c55503185ac4a42b68d01d8277cd84e.mp3', 
+        }
+
+        outputs = [{
+            'Key': 'hello.mp3',
+            'PresetId': '1351620000001-300040' # for example: 128k mp3 audio preset
+        }]
+
+        pipeline_id = '<pipeline_id>'
+
+        transcoder = Transcoder(pipeline_id, 'ap-southeast-1')
+        transcoder.encode(input, outputs)
+"""
