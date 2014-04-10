@@ -83,7 +83,7 @@ class SNSNotificationTest(TestCase):
         with open(os.path.join(FIXTURE_DIRS, 'onprogress.json')) as f:
             content = f.read()
 
-        resp = self.client.post('/sns_endpoint/', content, content_type="application/json")
+        resp = self.client.post('/endpoint/', content, content_type="application/json")
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.content, 'Done')
 
@@ -94,7 +94,7 @@ class SNSNotificationTest(TestCase):
         with open(os.path.join(FIXTURE_DIRS, 'onerror.json')) as f:
             content = f.read()
 
-        resp = self.client.post('/sns_endpoint/', content, content_type="application/json")
+        resp = self.client.post('/endpoint/', content, content_type="application/json")
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.content, 'Done')
 
@@ -106,7 +106,7 @@ class SNSNotificationTest(TestCase):
         with open(os.path.join(FIXTURE_DIRS, 'oncomplete.json')) as f:
             content = f.read()
 
-        resp = self.client.post('/sns_endpoint/', content, content_type="application/json")
+        resp = self.client.post('/endpoint/', content, content_type="application/json")
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.content, 'Done')
 

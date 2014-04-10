@@ -9,7 +9,7 @@ from .signals import (
     transcode_oncomplete
 )
 
-def sns_endpoint(request):
+def endpoint(request):
     """
     Receive SNS notification
     """

@@ -1,5 +1,5 @@
 from django.conf.urls import url, patterns
 
 urlpatterns = patterns('dj_elastictranscoder.views',
-    url(r'^endpoint/$', 'sns_endpoint'),
+    url(r'^endpoint/$', 'endpoint'),
 )
