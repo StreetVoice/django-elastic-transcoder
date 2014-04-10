@@ -6,7 +6,7 @@ setup(
     name='django-elastic-transcoder',
     version=__version__,
     description="Django with AWS elastic transcoder",
-    long_description=open("README.md").read(),
+    long_description=open("README.rst").read(),
     author='tzangms',
     author_email='tzangms@streetvoice.com',
     url='http://github.com/StreetVoice/django-elastic-transcoder',
