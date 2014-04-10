@@ -1,11 +1,13 @@
-django-elastic-transcoder
+Django Elastic Transcoder
 =========================
 
 |Build Status| |Coverage Status|
 
-Django + AWS Elastic Transcoder
+Workflow
+-----------
 
 .. image:: docs/images/workflow.jpg
+
 
 Install
 -------
