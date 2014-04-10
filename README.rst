@@ -3,6 +3,15 @@ Django Elastic Transcoder
 
 |Build Status| |Coverage Status|
 
+This package is an `Django` app, let you integrate with AWS Elastic Transcoder easily.
+
+What is provided in this package?
+
+- ``Transcoder`` class
+- URL endpoint for receive SNS notification
+- Signals for PROGRESS, ERROR, COMPLETE
+- ``EncodeJob`` model
+
 Workflow
 -----------
 
