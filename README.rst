@@ -89,6 +89,34 @@ For instance, encode an mp3
 
     transcoder = Transcoder(pipeline_id, AWS_REGION, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
 
+
+Setting Up AWS SNS endpoint
+---------------------------------
+
+AWS Elastic Transcoder can send various SNS notification to notify your application, like ``PROGRESS``, ``ERROR``, ``WARNING`` and ``COMPLETE``
+
+So this package provide a endpoint to receieve these notifications, for you to update transcode progress. without checking by your self.
+
+Go to SNS section in AWS WebConsole to choose topic and subscribe with the url below.
+
+``http://<your-domain>/dj_elastictranscoder/sns_endpoint/``
+
+Before notification get started to work, you have to activate SNS subscription, you will receive email with activation link.
+
+After subscribe is done, you will receive SNS notification.
+
+    
+Signals
+-----------
+
+This package provide various signals for you to get notification, and do more things in your application. you can check the signals usage in tests.py for more usage example.
+
+* transcode_init
+* transcode_onprogress
+* transcode_onerror
+* transcode_oncomplete
+
+
 .. |Build Status| image:: https://travis-ci.org/StreetVoice/django-elastic-transcoder.png?branch=master
    :target: https://travis-ci.org/StreetVoice/django-elastic-transcoder
 .. |Coverage Status| image:: https://coveralls.io/repos/StreetVoice/django-elastic-transcoder/badge.png?branch=master
