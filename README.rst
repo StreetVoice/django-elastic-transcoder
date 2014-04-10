@@ -83,6 +83,12 @@ For instance, encode an mp3
     transcoder = Transcoder(pipeline_id)
     transcoder.encode(input, outputs)
 
+
+    # Transcoder can also work standalone without Django
+    # just pass region and required aws key/secret to Transcoder, when initiate
+
+    transcoder = Transcoder(pipeline_id, AWS_REGION, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+
 .. |Build Status| image:: https://travis-ci.org/StreetVoice/django-elastic-transcoder.png?branch=master
    :target: https://travis-ci.org/StreetVoice/django-elastic-transcoder
 .. |Coverage Status| image:: https://coveralls.io/repos/StreetVoice/django-elastic-transcoder/badge.png?branch=master
