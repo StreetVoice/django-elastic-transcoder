@@ -48,6 +48,18 @@ Setting up AWS Elastic Transcoder
 3. Subscribe SNS Notification through HTTP
 4. You are ready to encode!
 
+
+Required Django settings
+-------------------------
+
+Please settings up variables below to make this app works.
+
+.. code:: python
+
+    AWS_ACCESS_KEY_ID = <your aws access key id>
+    AWS_SECRET_ACCESS_KEY = <your aws secret access key>
+    AWS_REGION = <aws region>
+
 Usage
 -----
 
@@ -68,7 +80,7 @@ For instance, encode an mp3
 
     pipeline_id = '<pipeline_id>'
 
-    transcoder = Transcoder(pipeline_id, 'ap-southeast-1')
+    transcoder = Transcoder(pipeline_id)
     transcoder.encode(input, outputs)
 
 .. |Build Status| image:: https://travis-ci.org/StreetVoice/django-elastic-transcoder.png?branch=master
