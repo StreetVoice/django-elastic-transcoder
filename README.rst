@@ -3,7 +3,7 @@ Django Elastic Transcoder
 
 |Build Status| |Coverage Status|
 
-This package is an `Django` app, let you integrate with AWS Elastic Transcoder easily.
+``django-elastic-transcoder`` is an `Django` app, let you integrate AWS Elastic Transcoder in Django easily.
 
 What is provided in this package?
 
