@@ -1,11 +1,12 @@
-from setuptools import setup, find_packages
+from setuptools import setup
 from dj_elastictranscoder import __version__
 
 
 setup(
     name='django-elastic-transcoder',
     version=__version__,
-    description="django-elastic-transcoder",
+    description="Django with AWS elastic transcoder",
+    long_description=open("README.md").read(),
     author='tzangms',
     author_email='tzangms@streetvoice.com',
     url='http://github.com/StreetVoice/django-elastic-transcoder',

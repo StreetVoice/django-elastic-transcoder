@@ -6,8 +6,6 @@ django-elastic-transcoder
 
 Django + AWS Elastic Transcoder
 
-_WARNING!!! Still in Development stage_
-
 
 Install
 -----------
@@ -15,7 +13,7 @@ Install
 First, install `dj_elastictranscode` with `pip`
 
 ```sh
-$ pip install django-elastic-transcoder # I didn't submit to PyPI yet.
+$ pip install django-elastic-transcoder
 ```
 
 Then, add `dj_elastictranscoder` to `INSTALLED_APPS`
