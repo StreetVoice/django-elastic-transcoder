@@ -99,7 +99,7 @@ So this package provide a endpoint to receieve these notifications, for you to u
 
 Go to SNS section in AWS WebConsole to choose topic and subscribe with the url below.
 
-``http://<your-domain>/dj_elastictranscoder/sns_endpoint/``
+``http://<your-domain>/dj_elastictranscoder/endpoint/``
 
 Before notification get started to work, you have to activate SNS subscription, you will receive email with activation link.
 
