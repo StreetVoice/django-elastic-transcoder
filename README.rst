@@ -5,6 +5,8 @@ django-elastic-transcoder
 
 Django + AWS Elastic Transcoder
 
+.. image:: docs/images/workflow.jpg
+
 Install
 -------
 
