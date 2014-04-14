@@ -3,5 +3,5 @@ from .models import EncodeJob
 
 class EncodeJobAdmin(admin.ModelAdmin):
     list_display = ('id', 'state', 'message')
-    list_filter = ('state',)
-admin.site.register(EncodeJob, EncodeJob)
+    list_filters = ('state',)
+admin.site.register(EncodeJob, EncodeJobAdmin)

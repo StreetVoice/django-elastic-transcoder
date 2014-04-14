@@ -96,6 +96,9 @@ For instance, encode an mp3
     transcoder = Transcoder(pipeline_id)
     transcoder.encode(input, outputs)
 
+    # your can also create a EncodeJob for object automatically
+    transcoder.create_job_for_object(obj)
+
 
     # Transcoder can also work standalone without Django
     # just pass region and required aws key/secret to Transcoder, when initiate
@@ -124,7 +127,6 @@ Signals
 
 This package provide various signals for you to get notification, and do more things in your application. you can check the signals usage in tests.py for more usage example.
 
-* transcode_init
 * transcode_onprogress
 * transcode_onerror
 * transcode_oncomplete

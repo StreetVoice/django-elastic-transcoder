@@ -1,8 +1,9 @@
 from boto import elastictranscoder
 
 from django.conf import settings
+from django.contrib.contenttypes.models import ContentType
 
-from .signals import transcode_init
+from .models import EncodeJob
 
 
 class Transcoder(object):
@@ -38,7 +39,14 @@ class Transcoder(object):
             aws_access_key_id=self.aws_access_key_id,
             aws_secret_access_key=self.aws_secret_access_key)
 
-        message = encoder.create_job(self.pipeline_id, input_name, outputs=outputs)
-        
-        # send signal
-        transcode_init.send(sender=None, message=message)
+        self.message = encoder.create_job(self.pipeline_id, input_name, outputs=outputs)
+
+
+    def create_job_for_object(self, obj):
+        content_type = ContentType.objects.get_for_model(obj)
+
+        job = EncodeJob()
+        job.id = self.message['Job']['Id']
+        job.content_type = content_type
+        job.object_id = obj.id
+        job.save()
