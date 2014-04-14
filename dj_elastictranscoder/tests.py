@@ -8,7 +8,6 @@ from django.contrib.contenttypes.models import ContentType
 
 from .models import EncodeJob
 from .signals import (
-    transcode_init, 
     transcode_onprogress, 
     transcode_onerror, 
     transcode_oncomplete
@@ -26,19 +25,6 @@ class Item(models.Model):
 # ======================
 # define signal receiver
 # ======================
-
-@receiver(transcode_init)
-def encode_init(sender, message, **kwargs):
-    item = Item.objects.create(name='Hello')
-
-    ctype = ContentType.objects.get_for_model(item)
-
-    job = EncodeJob()
-    job.id = message['Job']['Id']
-    job.content_type = ctype
-    job.object_id = item.id
-    job.save()
-
 
 @receiver(transcode_onprogress)
 def encode_onprogress(sender, message, **kwargs):
@@ -115,22 +101,6 @@ class SNSNotificationTest(TestCase):
 
 
 class SignalTest(TestCase):
-
-    def test_transcode_init(self):
-        """
-        test for transcode_init signal
-        """
-
-        with open(os.path.join(FIXTURE_DIRS, 'submit.json')) as f:
-            message = json.loads(f.read())
-
-        # send signal
-        transcode_init.send(sender=None, message=message)
-
-        self.assertEqual(1, EncodeJob.objects.count())
-
-        job = EncodeJob.objects.get(pk=message['Job']['Id'])
-        self.assertEqual('1396802241671-jkmme8', job.id)
 
     def test_transcode_onprogress(self):
         """
