@@ -46,20 +46,20 @@ def endpoint(request):
         job.state = 1
         job.save()
 
-        transcode_onprogress.send(sender=None, message=message)
+        transcode_onprogress.send(sender=None, job=job, message=message)
     elif message['state'] == 'COMPLETED':
         job = EncodeJob.objects.get(pk=message['jobId'])
         job.message = 'Success'
         job.state = 4
         job.save()
 
-        transcode_oncomplete.send(sender=None, message=message)
+        transcode_oncomplete.send(sender=None, job=job, message=message)
     elif message['state'] == 'ERROR':
         job = EncodeJob.objects.get(pk=message['jobId'])
         job.message = message['messageDetails']
         job.state = 2
         job.save()
 
-        transcode_onerror.send(sender=None, message=message)
+        transcode_onerror.send(sender=None, job=job, message=message)
 
     return HttpResponse('Done')
