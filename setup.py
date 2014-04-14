@@ -21,10 +21,13 @@ setup(
         "South >= 0.8",
     ],
     classifiers=[
+        "Intended Audience :: Developers",
+        "Operating System :: OS Independent",
         "Programming Language :: Python",
+        "Programming Language :: Python :: 2",
         "Topic :: Software Development :: Libraries :: Python Modules",
-        "Framework :: Django",
         "Environment :: Web Environment",
+        "Framework :: Django",
     ],
     keywords='django,aws,elastic,transcoder',
 )

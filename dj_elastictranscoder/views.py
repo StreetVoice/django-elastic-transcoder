@@ -1,6 +1,7 @@
 import json
 
 from django.http import HttpResponse, HttpResponseBadRequest
+from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import mail_admins
 
 from .models import EncodeJob
@@ -10,6 +11,7 @@ from .signals import (
     transcode_oncomplete
 )
 
+@csrf_exempt
 def endpoint(request):
     """
     Receive SNS notification
