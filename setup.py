@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 from dj_elastictranscoder import __version__
 
 
@@ -12,7 +12,7 @@ setup(
     url='http://github.com/StreetVoice/django-elastic-transcoder',
     license='MIT',
     test_suite='runtests.runtests',
-    packages=['dj_elastictranscoder',],
+    packages=find_packages(),
     include_package_data=True,
     zip_safe=False,
     install_requires = [
