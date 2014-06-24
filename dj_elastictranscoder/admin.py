@@ -1,13 +1,9 @@
 from django.contrib import admin
-from .models import EncodeJob, Upload, Job, Output
-
-
-class OutputInline(admin.StackedInline):
-    model = Output
+from .models import EncodeJob, Upload, Job
 
 
 class JobAdmin(admin.ModelAdmin):
-    inlines = (OutputInline, )
+    pass
 
 
 admin.site.register(Job, JobAdmin)

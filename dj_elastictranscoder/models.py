@@ -17,31 +17,13 @@ class Upload(models.Model):
         return self.video.name
 
 
-class Output(models.Model):
-    PRESET = (
-        ('1351620000001-100070', 'Web: Facebook, SmugMug, Vimeo, YouTube'),
-    )
-
-    job = models.ForeignKey("Job")
-    preset = models.CharField(max_length=20, choices=PRESET)
-    video = models.FileField(
-        blank=True,
-        storage=storage,
-        upload_to="videos/output",
-    )
-
-    class Meta:
-        unique_together = ('job', 'preset', )
-
-    def __unicode__(self):
-        if self.video:
-            return u"%s as %s DONE" % (self.job, self.get_preset_display())
-        return u"%s as %s" % (self.job, self.get_preset_display())
-
-
 class Job(models.Model):
     PIPELINE_ID = (
         ('1402976603358-rwcmfz', 'Mediacenter'),
+    )
+
+    PRESET = (
+        ('1351620000001-100070', 'Web: Facebook, SmugMug, Vimeo, YouTube'),
     )
 
     pipeline_id = models.CharField(
@@ -51,13 +33,30 @@ class Job(models.Model):
 
     upload = models.ForeignKey("Upload")
 
+    preset = models.CharField(
+        choices=PRESET,
+        default=PRESET[0][0],
+        max_length=20,
+    )
+
     et_job_id = models.CharField(
         blank=True,
         max_length=100,
     )
 
+    output = models.FileField(
+        blank=True,
+        storage=storage,
+        upload_to="videos/output",
+    )
+
+    class Meta:
+        unique_together = ("upload", "preset", )
+
     def __unicode__(self):
-        return u"%s on %s" % (self.upload, self.pipeline_id)
+        if self.output:
+            return u"%s as %s DONE" % (self.upload, self.get_preset_display())
+        return u"%s as %s" % (self.upload, self.get_preset_display())
 
 
 class EncodeJob(models.Model):

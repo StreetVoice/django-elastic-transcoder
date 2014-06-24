@@ -13,9 +13,14 @@ class Migration(SchemaMigration):
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('pipeline_id', self.gf('django.db.models.fields.CharField')(default='1402976603358-rwcmfz', max_length=32)),
             ('upload', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['dj_elastictranscoder.Upload'])),
+            ('preset', self.gf('django.db.models.fields.CharField')(default='1351620000001-100070', max_length=20)),
             ('et_job_id', self.gf('django.db.models.fields.CharField')(max_length=100, blank=True)),
+            ('output', self.gf('django.db.models.fields.files.FileField')(max_length=100, blank=True)),
         ))
         db.send_create_signal(u'dj_elastictranscoder', ['Job'])
+
+        # Adding unique constraint on 'Job', fields ['upload', 'preset']
+        db.create_unique(u'dj_elastictranscoder_job', ['upload_id', 'preset'])
 
         # Adding model 'Upload'
         db.create_table(u'dj_elastictranscoder_upload', (
@@ -24,31 +29,16 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal(u'dj_elastictranscoder', ['Upload'])
 
-        # Adding model 'Output'
-        db.create_table(u'dj_elastictranscoder_output', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('job', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['dj_elastictranscoder.Job'])),
-            ('preset', self.gf('django.db.models.fields.CharField')(max_length=20)),
-            ('video', self.gf('django.db.models.fields.files.FileField')(max_length=100, blank=True)),
-        ))
-        db.send_create_signal(u'dj_elastictranscoder', ['Output'])
-
-        # Adding unique constraint on 'Output', fields ['job', 'preset']
-        db.create_unique(u'dj_elastictranscoder_output', ['job_id', 'preset'])
-
 
     def backwards(self, orm):
-        # Removing unique constraint on 'Output', fields ['job', 'preset']
-        db.delete_unique(u'dj_elastictranscoder_output', ['job_id', 'preset'])
+        # Removing unique constraint on 'Job', fields ['upload', 'preset']
+        db.delete_unique(u'dj_elastictranscoder_job', ['upload_id', 'preset'])
 
         # Deleting model 'Job'
         db.delete_table(u'dj_elastictranscoder_job')
 
         # Deleting model 'Upload'
         db.delete_table(u'dj_elastictranscoder_upload')
-
-        # Deleting model 'Output'
-        db.delete_table(u'dj_elastictranscoder_output')
 
 
     models = {
@@ -70,18 +60,13 @@ class Migration(SchemaMigration):
             'state': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0', 'db_index': 'True'})
         },
         u'dj_elastictranscoder.job': {
-            'Meta': {'object_name': 'Job'},
+            'Meta': {'unique_together': "(('upload', 'preset'),)", 'object_name': 'Job'},
             'et_job_id': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'output': ('django.db.models.fields.files.FileField', [], {'max_length': '100', 'blank': 'True'}),
             'pipeline_id': ('django.db.models.fields.CharField', [], {'default': "'1402976603358-rwcmfz'", 'max_length': '32'}),
+            'preset': ('django.db.models.fields.CharField', [], {'default': "'1351620000001-100070'", 'max_length': '20'}),
             'upload': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['dj_elastictranscoder.Upload']"})
-        },
-        u'dj_elastictranscoder.output': {
-            'Meta': {'unique_together': "(('job', 'preset'),)", 'object_name': 'Output'},
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'job': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['dj_elastictranscoder.Job']"}),
-            'preset': ('django.db.models.fields.CharField', [], {'max_length': '20'}),
-            'video': ('django.db.models.fields.files.FileField', [], {'max_length': '100', 'blank': 'True'})
         },
         u'dj_elastictranscoder.upload': {
             'Meta': {'object_name': 'Upload'},

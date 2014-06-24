@@ -4,14 +4,11 @@ from .transcoder import Transcoder
 
 
 def et_create_job(job):
-    qs = job.output_set.filter(video="")
-    if qs.exists():
-        outputs = []
-        for output in qs:
-            outputs.append({
-                'Key': 'outputs/%s.mp4' % slugify(unicode(output)),
-                'PresetId': output.preset
-            })
+    if not job.output:
+        outputs = [{
+            'Key': 'outputs/%s.mp4' % slugify(unicode(job)),
+            'PresetId': job.preset
+        }]
 
         transcoder = Transcoder(job.pipeline_id)
         transcoder.encode({'Key': job.upload.video.name}, outputs)
@@ -25,6 +22,5 @@ def et_read_job(job):
     data = et.read_job(job.et_job_id)
     for output in data['Job']['Outputs']:
         if output['Status'] == 'Complete':
-            obj = job.output_set.get(preset=output['PresetId'])
-            obj.video = output['Key']
-            obj.save(update_fields=['video'])
+            job.output = output['Key']
+            job.save(update_fields=['output'])
