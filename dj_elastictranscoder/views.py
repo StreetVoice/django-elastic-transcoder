@@ -1,4 +1,5 @@
 import json
+import logging
 
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.views.decorators.csrf import csrf_exempt
@@ -11,6 +12,8 @@ from .signals import (
     transcode_oncomplete
 )
 
+logger = logging.getLogger('bellhops')
+
 @csrf_exempt
 def endpoint(request):
     """
@@ -22,6 +25,9 @@ def endpoint(request):
     except ValueError:
         return HttpResponseBadRequest('Invalid JSON')
 
+    logger.info("Transcoding endpoint hit with data {data}".format(
+        data=data
+    ))
 
     # handle SNS subscription
     if data['Type'] == 'SubscriptionConfirmation':
@@ -46,7 +52,7 @@ def endpoint(request):
         try:
             job = EncodeJob.objects.get(pk=message['jobId'])
         except EncodeJob.DoesNotExist:
-            raise Http400("Bad jobID")
+            return HttpResponse("Bad jobID", status=400)
         job.message = 'Progress'
         job.state = 1
         job.save()
@@ -56,7 +62,7 @@ def endpoint(request):
         try:
             job = EncodeJob.objects.get(pk=message['jobId'])
         except EncodeJob.DoesNotExist:
-            raise Http400("Bad jobID")
+            return HttpResponse("Bad jobID", status=400)
         job.message = 'Success'
         job.state = 4
         job.save()
@@ -66,7 +72,7 @@ def endpoint(request):
         try:
             job = EncodeJob.objects.get(pk=message['jobId'])
         except EncodeJob.DoesNotExist:
-            raise Http400("Bad jobID")
+            return HttpResponse("Bad jobID", status=400)
         job.message = message['messageDetails']
         job.state = 2
         job.save()
