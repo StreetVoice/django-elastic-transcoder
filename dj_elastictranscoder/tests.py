@@ -71,7 +71,7 @@ class SNSNotificationTest(TestCase):
 
         resp = self.client.post('/endpoint/', content, content_type="application/json")
         self.assertEqual(resp.status_code, 200)
-        self.assertEqual(resp.content, 'Done')
+        self.assertContains(resp, 'Done')
 
         job = EncodeJob.objects.get(id=self.job_id)
         self.assertEqual(job.state, 1)
@@ -82,7 +82,7 @@ class SNSNotificationTest(TestCase):
 
         resp = self.client.post('/endpoint/', content, content_type="application/json")
         self.assertEqual(resp.status_code, 200)
-        self.assertEqual(resp.content, 'Done')
+        self.assertContains(resp, 'Done')
 
         job = EncodeJob.objects.get(id=self.job_id)
         self.assertEqual(job.state, 2)
@@ -94,7 +94,7 @@ class SNSNotificationTest(TestCase):
 
         resp = self.client.post('/endpoint/', content, content_type="application/json")
         self.assertEqual(resp.status_code, 200)
-        self.assertEqual(resp.content, 'Done')
+        self.assertContains(resp, 'Done')
 
         job = EncodeJob.objects.get(id=self.job_id)
         self.assertEqual(job.state, 4)

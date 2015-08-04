@@ -18,7 +18,7 @@ def endpoint(request):
     """
 
     try:
-        data = json.loads(request.read())
+        data = json.loads(request.read().decode('utf-8'))
     except ValueError:
         return HttpResponseBadRequest('Invalid JSON')
 
