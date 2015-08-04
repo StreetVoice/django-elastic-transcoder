@@ -1,50 +1,34 @@
 language: python
-matrix:
-  include:
-    - python: "2.7"
-      env: TOX_ENV=py27-dj14
-    - python: "2.7"
-      env: TOX_ENV=py27-dj15
-    - python: "2.7"
-      env: TOX_ENV=py27-dj16
-    - python: "2.7"
-      env: TOX_ENV=py27-dj17
-    - python: "2.7"
-      env: TOX_ENV=py27-dj18
-    - python: "2.7"
-      env: TOX_ENV=py27-cov
-    - python: "3.3"
-      env: TOX_ENV=py33-dj15
-    - python: "3.3"
-      env: TOX_ENV=py33-dj16
-    - python: "3.3"
-      env: TOX_ENV=py33-dj17
-    - python: "3.3"
-      env: TOX_ENV=py33-dj18
-    - python: "3.4"
-      env: TOX_ENV=py34-dj15
-    - python: "3.4"
-      env: TOX_ENV=py34-dj16
-    - python: "3.4"
-      env: TOX_ENV=py34-dj17
-    - python: "3.4"
-      env: TOX_ENV=py34-dj18
-    - python: "pypy"
-      env: TOX_ENV=pypy-dj14
-    - python: "pypy"
-      env: TOX_ENV=pypy-dj15
-    - python: "pypy"
-      env: TOX_ENV=pypy-dj16
-    - python: "pypy"
-      env: TOX_ENV=pypy-dj17
-    - python: "pypy"
-      env: TOX_ENV=pypy-dj18
+
+python:
+  - "2.7"
+
+env:
+  matrix:
+    - TOX_ENV=py27-dj14
+    - TOX_ENV=py27-dj15
+    - TOX_ENV=py27-dj16
+    - TOX_ENV=py27-dj17
+    - TOX_ENV=py27-dj18
+    - TOX_ENV=py33-dj15
+    - TOX_ENV=py33-dj16
+    - TOX_ENV=py33-dj17
+    - TOX_ENV=py33-dj18
+    - TOX_ENV=py34-dj15
+    - TOX_ENV=py34-dj16
+    - TOX_ENV=py34-dj17
+    - TOX_ENV=py34-dj18
+    - TOX_ENV=pypy-dj14
+    - TOX_ENV=pypy-dj15
+    - TOX_ENV=pypy-dj16
+    - TOX_ENV=pypy-dj17
+    - TOX_ENV=pypy-dj18
+    - TOX_ENV=py27-cov
 
 install:
   - pip install tox
 
 script:
   - tox -e $TOX_ENV
-
 after_success:
   - coveralls
