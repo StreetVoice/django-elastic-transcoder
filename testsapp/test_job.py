@@ -6,21 +6,20 @@ from django.dispatch import receiver
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
 
-from .models import EncodeJob
-from .signals import (
+from dj_elastictranscoder.models import EncodeJob
+from dj_elastictranscoder.signals import (
     transcode_onprogress, 
     transcode_onerror, 
     transcode_oncomplete
 )
+
+from .models import Item
 
 
 
 PROJECT_ROOT = os.path.dirname(os.path.realpath(__file__))
 FIXTURE_DIRS = os.path.join(PROJECT_ROOT, 'fixtures')
 
-
-class Item(models.Model):
-    name = models.CharField(max_length=100)
 
 # ======================
 # define signal receiver

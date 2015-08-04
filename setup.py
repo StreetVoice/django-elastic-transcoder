@@ -11,12 +11,11 @@ setup(
     author_email='tzangms@streetvoice.com',
     url='http://github.com/StreetVoice/django-elastic-transcoder',
     license='MIT',
-    test_suite='runtests.runtests',
     packages=find_packages(),
     include_package_data=True,
     zip_safe=False,
     install_requires=[
-        "django >= 1.4, < 1.7",
+        "django >= 1.4, < 1.9",
         "boto >= 2.5",
         "South >= 0.8",
     ],
