@@ -2,13 +2,33 @@ language: python
 
 python:
   - "2.7"
-  - "3.4"
+
+env:
+  matrix:
+    - TOX_ENV=py27-dj14
+    - TOX_ENV=py27-dj15
+    - TOX_ENV=py27-dj16
+    - TOX_ENV=py27-dj17
+    - TOX_ENV=py27-dj18
+    - TOX_ENV=py33-dj15
+    - TOX_ENV=py33-dj16
+    - TOX_ENV=py33-dj17
+    - TOX_ENV=py33-dj18
+    - TOX_ENV=py34-dj15
+    - TOX_ENV=py34-dj16
+    - TOX_ENV=py34-dj17
+    - TOX_ENV=py34-dj18
+    - TOX_ENV=pypy-dj14
+    - TOX_ENV=pypy-dj15
+    - TOX_ENV=pypy-dj16
+    - TOX_ENV=pypy-dj17
+    - TOX_ENV=pypy-dj18
+    - TOX_ENV=py27-cov
 
 install:
-  - pip install coveralls
+  - pip install tox
 
 script:
-  - coverage run --source=dj_elastictranscoder setup.py test
-
+  - tox -e $TOX_ENV
 after_success:
   - coveralls
