@@ -7,7 +7,8 @@ from .models import EncodeJob
 
 
 class Transcoder(object):
-    def __init__(self, pipeline_id, region=None, access_key_id=None, secret_access_key=None):
+    def __init__(self, pipeline_id, region=None, access_key_id=None,
+                 secret_access_key=None):
         self.pipeline_id = pipeline_id
 
         if not region:
@@ -19,9 +20,9 @@ class Transcoder(object):
         self.aws_access_key_id = access_key_id
 
         if not secret_access_key:
-            secret_access_key = getattr(settings, 'AWS_SECRET_ACCESS_KEY', None)
+            secret_access_key = \
+                getattr(settings, 'AWS_SECRET_ACCESS_KEY', None)
         self.aws_secret_access_key = secret_access_key
-
 
         if self.aws_access_key_id is None:
             assert False, 'Please provide AWS_ACCESS_KEY_ID'
@@ -32,21 +33,22 @@ class Transcoder(object):
         if self.aws_region is None:
             assert False, 'Please provide AWS_REGION'
 
-
     def encode(self, input_name, outputs):
-        encoder = elastictranscoder.connect_to_region(
-            self.aws_region, 
+        et = self.get_et()
+        self.message = \
+            et.create_job(self.pipeline_id, input_name, outputs=outputs)
+
+    def get_et(self):
+        return elastictranscoder.connect_to_region(
+            self.aws_region,
             aws_access_key_id=self.aws_access_key_id,
             aws_secret_access_key=self.aws_secret_access_key)
 
-        self.message = encoder.create_job(self.pipeline_id, input_name, outputs=outputs)
-
-
     def create_job_for_object(self, obj):
         content_type = ContentType.objects.get_for_model(obj)
-
         job = EncodeJob()
         job.id = self.message['Job']['Id']
         job.content_type = content_type
         job.object_id = obj.id
         job.save()
+        return self.message['Job']['Id']
