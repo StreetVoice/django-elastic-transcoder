@@ -1,4 +1,4 @@
-from boto import elastictranscoder
+from boto3.session import Session
 
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
@@ -7,6 +7,7 @@ from .models import EncodeJob
 
 
 class Transcoder(object):
+
     def __init__(self, pipeline_id, region=None, access_key_id=None, secret_access_key=None):
         self.pipeline_id = pipeline_id
 
@@ -22,7 +23,6 @@ class Transcoder(object):
             secret_access_key = getattr(settings, 'AWS_SECRET_ACCESS_KEY', None)
         self.aws_secret_access_key = secret_access_key
 
-
         if self.aws_access_key_id is None:
             assert False, 'Please provide AWS_ACCESS_KEY_ID'
 
@@ -32,15 +32,20 @@ class Transcoder(object):
         if self.aws_region is None:
             assert False, 'Please provide AWS_REGION'
 
-
-    def encode(self, input_name, outputs):
-        encoder = elastictranscoder.connect_to_region(
-            self.aws_region, 
+        boto_session = Session(
             aws_access_key_id=self.aws_access_key_id,
-            aws_secret_access_key=self.aws_secret_access_key)
+            aws_secret_access_key=self.aws_secret_access_key,
+            region_name=self.aws_region,
+        )
+        self.client = boto_session.client('elastictranscoder')
 
-        self.message = encoder.create_job(self.pipeline_id, input_name, outputs=outputs)
-
+    def encode(self, input_name, outputs, **kwargs):
+        self.message = self.client.create_job(
+            PipelineId=self.pipeline_id,
+            Input=input_name,
+            Outputs=outputs,
+            **kwargs
+        )
 
     def create_job_for_object(self, obj):
         content_type = ContentType.objects.get_for_model(obj)
