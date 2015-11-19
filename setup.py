@@ -16,7 +16,7 @@ setup(
     zip_safe=False,
     install_requires=[
         "django >= 1.4, < 1.9",
-        "boto >= 2.5",
+        "boto3 >= 1.1",
         "South >= 0.8",
     ],
     classifiers=[
