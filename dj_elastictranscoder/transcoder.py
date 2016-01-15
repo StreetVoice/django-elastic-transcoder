@@ -53,5 +53,5 @@ class Transcoder(object):
         job = EncodeJob()
         job.id = self.message['Job']['Id']
         job.content_type = content_type
-        job.object_id = obj.id
+        job.object_id = obj.pk
         job.save()
