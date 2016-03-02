@@ -23,15 +23,6 @@ class Transcoder(object):
             secret_access_key = getattr(settings, 'AWS_SECRET_ACCESS_KEY', None)
         self.aws_secret_access_key = secret_access_key
 
-        if self.aws_access_key_id is None:
-            assert False, 'Please provide AWS_ACCESS_KEY_ID'
-
-        if self.aws_secret_access_key is None:
-            assert False, 'Please provide AWS_SECRET_ACCESS_KEY'
-
-        if self.aws_region is None:
-            assert False, 'Please provide AWS_REGION'
-
         boto_session = Session(
             aws_access_key_id=self.aws_access_key_id,
             aws_secret_access_key=self.aws_secret_access_key,
