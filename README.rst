@@ -15,7 +15,7 @@ What is provided in this package?
 Workflow
 -----------
 
-.. image:: docs/images/workflow.jpg
+.. image:: https://github.com/StreetVoice/django-elastic-transcoder/blob/master/docs/images/workflow.jpg
 
 
 Install
