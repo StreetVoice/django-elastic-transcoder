@@ -5,3 +5,5 @@
 *.egg-info
 .coverage
 .tox
+.eggs
+.cache
