@@ -15,9 +15,10 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=[
-        "django >= 1.3, < 1.9",
         "boto3 >= 1.1",
-        "South >= 0.8",
+        "django >= 1.3, < 1.9",
+        "qiniu >= 7.0.8",
+        "south >= 0.8",
     ],
     classifiers=[
         "Intended Audience :: Developers",
@@ -31,5 +32,5 @@ setup(
         "Environment :: Web Environment",
         "Framework :: Django",
     ],
-    keywords='django,aws,elastic,transcoder',
+    keywords='django,aws,elastic,transcoder,qiniu,audio',
 )
