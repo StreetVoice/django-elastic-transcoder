@@ -20,7 +20,7 @@ def get_version():
 
 
 if sys.argv[-1] == 'wheel':
-    os.system('pip wheel .')
+    os.system('pip wheel --wheel-dir=wheelhouse .')
     sys.exit()
 
 setup(
