@@ -1,9 +1,10 @@
-.DS_Store
-/dist
-*.swp
-*.pyc
 *.egg-info
-.coverage
-.tox
-.eggs
+*.pyc
+*.swp
 .cache
+.coverage
+.DS_Store
+.eggs
+.tox
+/dist
+/wheelhouse
