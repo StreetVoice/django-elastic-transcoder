@@ -102,3 +102,39 @@ def qiniu_endpoint(request):
         raise RuntimeError('Invalid code')
 
     return HttpResponse('Done')
+
+
+@csrf_exempt
+@require_http_methods(['POST', ])
+def aliyun_endpoint(request):
+    """
+    Receive Aliyun notification
+    """
+
+    try:
+        webhook = request.read().decode('utf-8')
+        data = json.loads(webhook)
+    except ValueError:
+        return HttpResponseBadRequest('Invalid JSON')
+
+    message = json.loads(data['Message'])
+    if message['Type'] == 'Transcode':
+        state = message['state']
+        job_id = message['jobId']
+
+        job = EncodeJob.objects.get(pk=job_id)
+
+        # https://help.aliyun.com/document_detail/57347.html?spm=5176.doc29208.6.724.4zQQQ4
+        if state == 'Success':  # Complate
+            job.message = webhook
+            job.state = 4
+            job.save()
+            transcode_oncomplete.send(sender=None, job=job, job_response=job_id)
+        elif state == 'Fail':  # Error
+            job.message = webhook
+            job.state = 2
+            job.save()
+            transcode_onerror.send(sender=None, job=job, job_response=data)
+        else:
+            raise RuntimeError('Invalid code')
+        return HttpResponse('Done')

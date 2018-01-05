@@ -8,4 +8,5 @@ urlpatterns = patterns(
     url(r'^endpoint/$', 'aws_endpoint'),
     url(r'^aws_endpoint/$', 'aws_endpoint', name='aws_endpoint'),
     url(r'^qiniu_endpoint/$', 'qiniu_endpoint', name='qiniu_endpoint'),
+    url(r'^aliyun_endpoint', 'aliyun_endpoint', name='aliyun_endpoint'),
 )
