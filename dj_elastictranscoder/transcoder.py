@@ -130,7 +130,7 @@ class AliyunTranscoder(Transcoder):
         self.access_key_secret = access_key_secret if access_key_secret else get_setting_or_raise('ALIYUN_TRANSCODE_ACCESS_KEY_SECRET')
         self.pipeline_id = pipeline_id if pipeline_id else get_setting_or_raise('ALIYUN_TRANSCODE_ACCESS_KEY_SECRET')
         self.template_id = template_id if template_id else get_setting_or_raise('ALIYUN_TRANSCODE_TEMPLATE_ID')
-        self.bucket_name = bucket_name if bucket_name else get_setting_or_raise('ALIYUN_OSS_LOCATION')
+        self.bucket_name = bucket_name if bucket_name else get_setting_or_raise('ALIYUN_AUDIO_OSS_BUCKET_NAME')
         self.region = region if region else get_setting_or_raise('ALIYUN_TRANSCODE_REGION')
         self.location = location if location else get_setting_or_raise('ALIYUN_OSS_LOCATION')
         self.notify_url = notify_url if notify_url else get_setting_or_raise('ALIYUN_TRANSCODE_NOTIFY_URL')
