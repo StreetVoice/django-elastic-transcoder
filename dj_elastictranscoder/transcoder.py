@@ -160,7 +160,12 @@ class AliyunTranscoder(Transcoder):
                            'Object': quote(filename)})
 
     def start_job(self, obj, transcode_kwargs, message=''):
-        """
+        """Invoking task of AliyunTranscoder
+
+        transcode_kwargs(dict): Detail how to invoke task of AliyunTranscoder
+            input(str): A json string by make_input
+            outputs(str): A json string by make_outputs
+
         Transcoder reference: https://help.aliyun.com/document_detail/67664.html
         """
         import json
