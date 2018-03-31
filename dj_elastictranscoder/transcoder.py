@@ -120,17 +120,44 @@ class AliyunTranscoder(Transcoder):
         access_key_id=None,
         access_key_secret=None,
         pipeline_id=None,
+        template_id=None,
+        bucket_name=None,
         region=None,
+        location=None,
         notify_url=None
     ):
         self.access_key_id = access_key_id if access_key_id else get_setting_or_raise('ALIYUN_TRANSCODE_ACCESS_KEY_ID')
         self.access_key_secret = access_key_secret if access_key_secret else get_setting_or_raise('ALIYUN_TRANSCODE_ACCESS_KEY_SECRET')
         self.pipeline_id = pipeline_id if pipeline_id else get_setting_or_raise('ALIYUN_TRANSCODE_ACCESS_KEY_SECRET')
+        self.template_id = template_id if template_id else get_setting_or_raise('ALIYUN_TRANSCODE_TEMPLATE_ID')
+        self.bucket_name = bucket_name if bucket_name else get_setting_or_raise('ALIYUN_OSS_LOCATION')
         self.region = region if region else get_setting_or_raise('ALIYUN_TRANSCODE_REGION')
+        self.location = location if location else get_setting_or_raise('ALIYUN_OSS_LOCATION')
         self.notify_url = notify_url if notify_url else get_setting_or_raise('ALIYUN_TRANSCODE_NOTIFY_URL')
 
         from aliyunsdkcore import client
         self.client = client.AcsClient(self.access_key_id, self.access_key_secret, self.region)
+
+    def make_outputs(self, filename):
+        try:
+            from urllib import quote  # Python 2.X
+        except ImportError:
+            from urllib.parse import quote  # Python 3+
+        import json
+
+        return json.dumps([{'OutputObject': quote(filename),
+                            'TemplateId': self.template_id}])
+
+    def make_input(self, filename):
+        try:
+            from urllib import quote  # Python 2.X
+        except ImportError:
+            from urllib.parse import quote  # Python 3+
+        import json
+
+        return json.dumps({'Location': self.location,
+                           'Bucket': self.bucket_name,
+                           'Object': quote(filename)})
 
     def start_job(self, obj, transcode_kwargs, message=''):
         """
@@ -141,10 +168,10 @@ class AliyunTranscoder(Transcoder):
 
         request = SubmitJobsRequest.SubmitJobsRequest()
         request.set_accept_format('json')
-        request.set_Input(json.dumps(transcode_kwargs.get('input_file')))
-        request.set_OutputBucket(transcode_kwargs.get('bucket'))
-        request.set_OutputLocation(transcode_kwargs.get('oss_location'))
-        request.set_Outputs(json.dumps(transcode_kwargs.get('outputs')))
+        request.set_Input(json.dumps(transcode_kwargs.get('input')))
+        request.set_OutputBucket(self.bucket_name)
+        request.set_OutputLocation(self.location)
+        request.set_Outputs(transcode_kwargs.get('outputs'))
         request.set_PipelineId(self.pipeline_id)
         response = json.loads(self.client.do_action_with_exception(request).decode('utf-8'))
 
