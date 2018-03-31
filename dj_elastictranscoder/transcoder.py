@@ -123,35 +123,19 @@ class AliyunTranscoder(Transcoder):
         region=None,
         notify_url=None
     ):
-        if not access_key_id:
-            access_key_id = get_setting_or_raise('ALIYUN_TRANSCODE_ACCESS_KEY_ID')
-        self.access_key_id = access_key_id
-
-        if not access_key_secret:
-            access_key_secret = get_setting_or_raise('ALIYUN_TRANSCODE_ACCESS_KEY_SECRET')
-        self.access_key_secret = access_key_secret
-
-        if not pipeline_id:
-            pipeline_id = get_setting_or_raise('ALIYUN_TRANSCODE_PIPELINE_ID')
-        self.pipeline_id = pipeline_id
-
-        if not region:
-            region = get_setting_or_raise('ALIYUN_TRANSCODE_REGION')
-        self.region = region
-
-        if not notify_url:
-            notify_url = get_setting_or_raise('ALIYUN_TRANSCODE_NOTIFY_URL')
-        self.notify_url = notify_url
+        self.access_key_id = access_key_id if access_key_id else get_setting_or_raise('ALIYUN_TRANSCODE_ACCESS_KEY_ID')
+        self.access_key_secret = access_key_secret if access_key_secret else get_setting_or_raise('ALIYUN_TRANSCODE_ACCESS_KEY_SECRET')
+        self.pipeline_id = pipeline_id if pipeline_id else get_setting_or_raise('ALIYUN_TRANSCODE_ACCESS_KEY_SECRET')
+        self.region = region if region else get_setting_or_raise('ALIYUN_TRANSCODE_REGION')
+        self.notify_url = notify_url if notify_url else get_setting_or_raise('ALIYUN_TRANSCODE_NOTIFY_URL')
 
         from aliyunsdkcore import client
-
         self.client = client.AcsClient(self.access_key_id, self.access_key_secret, self.region)
 
     def start_job(self, obj, transcode_kwargs, message=''):
         """
-        https://help.aliyun.com/document_detail/57347.html?spm=5176.doc56767.6.724.AJ8z3E
+        Transcoder reference: https://help.aliyun.com/document_detail/67664.html
         """
-
         import json
         from aliyunsdkmts.request.v20140618 import SubmitJobsRequest
 
@@ -165,9 +149,8 @@ class AliyunTranscoder(Transcoder):
         response = json.loads(self.client.do_action_with_exception(request).decode('utf-8'))
 
         content_type = ContentType.objects.get_for_model(obj)
-        job = EncodeJob()
-        job.id = response['JobResultList']['JobResult'][0]['Job']['JobId']
-        job.content_type = content_type
-        job.object_id = obj.pk
-        job.message = message
+        job = EncodeJob(id=response['JobResultList']['JobResult'][0]['Job']['JobId'],
+                        content_type=content_type,
+                        object_id=obj.pk,
+                        message=message)
         job.save()
