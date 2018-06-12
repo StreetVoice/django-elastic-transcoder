@@ -53,5 +53,5 @@ setup(
         "Environment :: Web Environment",
         "Framework :: Django",
     ],
-    keywords='django,aws,elastic,transcoder,qiniu,audio',
+    keywords='django,aws,elastic,transcoder,qiniu,audio,aliyun',
 )

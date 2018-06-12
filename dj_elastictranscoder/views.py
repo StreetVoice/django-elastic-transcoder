@@ -1,7 +1,7 @@
 import json
 
 from django.core.mail import mail_admins
-from django.http import HttpResponse, HttpResponseBadRequest
+from django.http import Http404, HttpResponse, HttpResponseBadRequest
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 
@@ -122,7 +122,10 @@ def aliyun_endpoint(request):
         state = message['state']
         job_id = message['jobId']
 
-        job = EncodeJob.objects.get(pk=job_id)
+        try:
+            job = EncodeJob.objects.get(pk=job_id)
+        except EncodeJob.DoesNotExist:
+            raise Http404
 
         # https://help.aliyun.com/document_detail/57347.html?spm=5176.doc29208.6.724.4zQQQ4
         if state == 'Success':  # Complate
