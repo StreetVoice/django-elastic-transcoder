@@ -6,7 +6,6 @@ if django.get_version() >= '1.8':
 else:
     from django.contrib.contenttypes.generic import GenericForeignKey
 
-
 class EncodeJob(models.Model):
     STATE_CHOICES = (
         (0, 'Submitted'),
@@ -16,7 +15,7 @@ class EncodeJob(models.Model):
         (4, 'Complete'),
     )
     id = models.CharField(max_length=100, primary_key=True)
-    content_type = models.ForeignKey(ContentType)
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     state = models.PositiveIntegerField(choices=STATE_CHOICES, default=0, db_index=True)
     content_object = GenericForeignKey()
