@@ -39,7 +39,6 @@ setup(
         "boto3 >= 1.1",
         "django >= 1.3, < 1.9",
         "qiniu >= 7.0.8",
-        "south >= 0.8",
     ],
     classifiers=[
         "Intended Audience :: Developers",
