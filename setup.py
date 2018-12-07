@@ -36,7 +36,7 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=[
-        "boto3 >= 1.1",
+        "boto3 >= 1.1, <= 1.9.60",
         "django >= 1.3, < 1.9",
         "qiniu >= 7.0.8",
     ],
