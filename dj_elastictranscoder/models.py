@@ -1,7 +1,8 @@
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
+
 import django
-if django.get_version() >= '1.8':
+if django.VERSION >= (1, 8):
     from django.contrib.contenttypes.fields import GenericForeignKey
 else:
     from django.contrib.contenttypes.generic import GenericForeignKey
