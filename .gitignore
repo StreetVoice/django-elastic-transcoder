@@ -6,5 +6,6 @@
 .DS_Store
 .eggs
 .tox
+/build
 /dist
 /wheelhouse

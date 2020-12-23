@@ -1,5 +1,4 @@
-pytest
-pytest-django
+pytest==6.1.2
+pytest-django==3.10.0
 pytest-cov
 boto
-south
