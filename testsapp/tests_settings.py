@@ -15,5 +15,5 @@ INSTALLED_APPS = [
 ]
 SITE_ID = 1
 DEBUG = False
-ROOT_URLCONF = ''
+ROOT_URLCONF = 'dj_elastictranscoder.urls'
 SECRET_KEY='test'

@@ -2,4 +2,3 @@ pytest
 pytest-django
 pytest-cov
 boto
-south
