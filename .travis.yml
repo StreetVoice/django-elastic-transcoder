@@ -1,27 +1,25 @@
 language: python
 
 python:
-  - "3.5"
-  - "3.6"
   - "3.7"
 
 env:
   matrix:
-    - TOX_ENV=py35-dj20
-    - TOX_ENV=py35-dj21
-    - TOX_ENV=py35-dj22
-    - TOX_ENV=py36-dj20
-    - TOX_ENV=py36-dj21
-    - TOX_ENV=py36-dj22
-    - TOX_ENV=py37-dj20
-    - TOX_ENV=py37-dj21
-    - TOX_ENV=py37-dj22
+    - TOXENV="py35-dj20"
+    - TOXENV="py35-dj21"
+    - TOXENV="py35-dj22"
+    - TOXENV="py36-dj20"
+    - TOXENV="py36-dj21"
+    - TOXENV="py36-dj22"
+    - TOXENV="py37-dj20"
+    - TOXENV="py37-dj21"
+    - TOXENV="py37-dj22"
 
 install:
   - pip install tox
 
 script:
-  - tox -e $TOX_ENV
+  - tox -e $TOXENV
 
 after_success:
   - coveralls
