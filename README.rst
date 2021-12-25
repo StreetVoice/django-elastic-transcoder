@@ -111,7 +111,7 @@ Setting Up AWS SNS endpoint
 
 AWS Elastic Transcoder can send various SNS notification to notify your application, like ``PROGRESS``, ``ERROR``, ``WARNING`` and ``COMPLETE``
 
-So this package provide a endpoint to receieve these notifications, for you to update transcode progress. without checking by your self.
+So this package provide a endpoint to receive these notifications, for you to update transcode progress. without checking by your self.
 
 Go to SNS section in AWS WebConsole to choose topic and subscribe with the url below.
 
